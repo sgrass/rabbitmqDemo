@@ -17,8 +17,9 @@ public class HelloController {
     private HelloSender helloSender;
     
     @RequestMapping("/sendHello")
-    public void send() {
+    public String send() {
       System.out.println(123);
       helloSender.send();
+      return "success";
     }
 }

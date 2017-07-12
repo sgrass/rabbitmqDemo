@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>org.cx</groupId>
-	<artifactId>rabbitmqDemo</artifactId>
+	<artifactId>rabbitmq-demo</artifactId>
 	<version>1.0</version>
 	<packaging>jar</packaging>
 
@@ -15,7 +15,7 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>1.5.4.RELEASE</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 
 	<properties>
@@ -46,6 +46,30 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+
+			<plugin>
+				<groupId>com.spotify</groupId>
+				<artifactId>docker-maven-plugin</artifactId>
+				<version>0.4.12</version>
+				<configuration>
+				  <!-- 注意imageName一定要是符合正则[a-z0-9-_.]的，否则构建不会成功 -->
+				  <!-- 详见：https://github.com/spotify/docker-maven-plugin    Invalid repository name ... only [a-z0-9-_.] are allowed-->
+<!-- 					<imageName>${docker.image.prefix}/${project.artifactId}</imageName> -->
+					<imageName>rabbitmq-demo</imageName>
+					<!-- dockerfile方式 -->
+					<dockerDirectory>${project.basedir}</dockerDirectory>
+					<!-- 不需要dockerfile -->
+<!--           <baseImage>java</baseImage> -->
+<!--           <entryPoint>["java", "-jar", "/${project.build.finalName}.jar"]</entryPoint> -->
+					<resources>
+						<resource>
+							<targetPath>/</targetPath>
+							<directory>${project.build.directory}</directory>
+							<include>${project.build.finalName}.jar</include>
+						</resource>
+					</resources>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
